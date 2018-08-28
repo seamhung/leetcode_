@@ -7,6 +7,13 @@ import solutions.utility.ArrayListEngine;
  */
 public class ShellSort {
 
+    /**
+     * 希尔排序： 将数组通过 gap 划分为不同的 小区间 通过将小区间的有序（比较间隔 两端的大小进行交换），逐渐缩小gap的大小 ，将数组排序为有序
+     *
+     * @param arr
+     * @return sorted arr
+     */
+
     private void swap(int[] arr, int a, int b) {
         arr[a] = arr[a] + arr[b];
         arr[b] = arr[a] - arr[b];
@@ -34,19 +41,16 @@ public class ShellSort {
     public int[] solution3(int[] arr) {
 
         int len = arr.length, gap = len / 2;
-
         while (gap > 0) {
 
             for (int i = gap; i < len; i++) {
-
-                for (int j = i; j - gap >= 0 && arr[j] < arr[j - gap]; j -= gap) {
-                    int temp = arr[j - gap];
-                    arr[j - gap] = arr[j];
-                    arr[j] = temp;
+                for (int j = i; j - gap > -1 && arr[j] < arr[j - gap]; j -= gap) {
+                    int temp = arr[j];
+                    arr[j] = arr[j - gap];
+                    arr[j - gap] = temp;
                 }
-
             }
-            gap = gap /2;
+            gap = gap / 2;
         }
         return arr;
     }
