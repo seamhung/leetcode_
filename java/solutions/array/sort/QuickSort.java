@@ -2,6 +2,8 @@ package solutions.array.sort;
 
 import solutions.utility.ArrayListEngine;
 
+import java.util.Random;
+
 /**
  * Created by hoducust on 2018/8/12 22H 52m .
  *
@@ -12,6 +14,10 @@ import solutions.utility.ArrayListEngine;
 public class QuickSort {
 
     private int partition(int[] arr, int l, int r) {
+        // 优化 将标定点随机化，避免近乎有序待排序素组 将算法退化为 O^2
+        int vi = (int) (Math.random() * (r - l + 1) + l);
+        swap(arr, l, vi);
+
         int v = arr[l];
         int j = l;
         for (int i = l + 1; i <= r; i++) { // 大分区起始点 从标定点下一个开始
@@ -21,6 +27,23 @@ public class QuickSort {
             }
         }
         // 分区完成 将标定点移动到 小分区尾端
+        swap(arr, l, j);
+        return j;
+    }
+
+    private int partition2(int[] arr, int l, int r) {
+        int vi = (int) (Math.random() * (r - l + 1) + l);
+        int v = arr[l];
+        int i = l + 1, j = r;
+
+        while (true) {
+            while (i <= r && arr[i] < v) i++;
+            while (j >= l && arr[j] > v) j--;
+            if (i >= j) break;
+            swap(arr, i, j);
+            i++;
+            j--;
+        }
         swap(arr, l, j);
         return j;
     }
@@ -42,14 +65,30 @@ public class QuickSort {
 
     }
 
+    private void sort2(int[] arr, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+        int p = partition2(arr, l, r);
+        sort2(arr, l, p - 1);
+        sort2(arr, p + 1, r);
+    }
+
+
     public int[] solution1(int[] arr) {
         int len = arr.length;
         sort(arr, 0, len - 1);
         return arr;
     }
 
+    public int[] solution2(int[] arr) {
+        int len = arr.length;
+        sort2(arr, 0, len - 1);
+        return arr;
+    }
+
     public static void main(String[] args) {
         int[] list = new ArrayListEngine().randomGenerateArray(9999, 1000000, 1423L);
-        new QuickSort().solution1(list);
+        new QuickSort().solution2(list);
     }
 }
