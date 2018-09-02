@@ -16,6 +16,20 @@ public class MaxHeap<Item extends Comparable> {
         this.length = 0;
     }
 
+    // Heapify 使构造堆的时间复杂度为 O(n)
+    public MaxHeap(Item arr[]) {
+        int len = arr.length;
+        this.capacity = len;
+        this.length = len;
+        this.data = (Item[]) new Comparable[len + 1];
+        while (len-- > 0) {
+            data[len] = arr[len];
+        }
+        for (int i = length / 2; i > 0; i--) {
+            shiftDown(i);
+        }
+    }
+
     public void insert(Item value) {
         if (length + 1 <= capacity) {
             data[length + 1] = value;
