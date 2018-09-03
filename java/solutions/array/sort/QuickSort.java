@@ -74,6 +74,29 @@ public class QuickSort {
         sort2(arr, p + 1, r);
     }
 
+    private void sort2Ways(int[] arr, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+
+        int lt = l, gt = r + 1, i = l+1;
+        swap(arr, l, (int) (Math.random() * (r - l + 1) + l));
+        int v = arr[l];
+
+        while (i < gt) {
+            if (arr[i] < v) {
+                swap(arr, i++, ++lt);
+            } else if (arr[i] > v) {
+                swap(arr, i, --gt);
+            } else {
+                i++;
+            }
+        }
+        swap(arr, l, lt);
+        sort2Ways(arr, l, lt - 1);
+        sort2Ways(arr, gt, r);
+    }
+
 
     public int[] solution1(int[] arr) {
         int len = arr.length;
@@ -87,8 +110,15 @@ public class QuickSort {
         return arr;
     }
 
+    // 3 ways
+    public int[] solution3(int[] arr) {
+        int len = arr.length;
+        sort2Ways(arr, 0, len - 1);
+        return arr;
+    }
+
     public static void main(String[] args) {
         int[] list = new ArrayListEngine().randomGenerateArray(9999, 1000000, 1423L);
-        new QuickSort().solution2(list);
+        new QuickSort().solution3(list);
     }
 }
