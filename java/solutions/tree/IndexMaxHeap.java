@@ -3,7 +3,7 @@ package solutions.tree;
 /**
  * Created by hoducust on 2018/9/3 22H 36m .
  */
-public class IndexMaxHeap<Item> {
+public class IndexMaxHeap<Item extends Comparable> {
 
     Item[] data;
     int count;
@@ -15,12 +15,27 @@ public class IndexMaxHeap<Item> {
         this.count = 0;
     }
 
+    // 往堆中添加元素
     public void insert(Item item) {
-
+        if (count + 1 <= capacity) {
+            data[count + 1] = item;
+            count++;
+            shiftUp(count);
+        } else {
+            throw new ArrayIndexOutOfBoundsException("heap capacity out of bound");
+        }
     }
 
     public Item extractMax() {
-
+        Item result = null;
+        if (count > 0) {
+            result = data[1];
+            swap(data, 1, count--);
+            shiftDown(count);
+        } else {
+            throw new IndexOutOfBoundsException("heap count is enpty");
+        }
+        return result;
     }
 
     public boolean isEmpty() {
@@ -31,12 +46,25 @@ public class IndexMaxHeap<Item> {
         return count;
     }
 
-    private void shiftUp() {
-
+    private void shiftUp(int k) {
+        while (count != 0 && data[k / 2].compareTo(data[k]) < 0) {
+            swap(data, k / 2, k);
+            k = k / 2;
+        }
     }
 
-    private void shiftDown() {
-
+    private void shiftDown(int k) {
+        while (k * 2 < count) {
+            int ks = k * 2;
+            if (ks + 1 <= count && data[ks].compareTo(data[ks + 1]) < 0) {
+                ks++;
+            }
+            if (data[k].compareTo(data[ks]) > 0) {
+                break;
+            }
+            swap(data, k, ks);
+            k = ks;
+        }
     }
 
     private void swap(Item[] arr, int i, int j) {
