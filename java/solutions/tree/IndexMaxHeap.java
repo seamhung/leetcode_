@@ -15,6 +15,20 @@ public class IndexMaxHeap<Item extends Comparable> {
         this.count = 0;
     }
 
+    public IndexMaxHeap(Item[] arrs) {
+        int length = arrs.length;
+        this.capacity = length;
+        this.count = length;
+        this.data = (Item[]) new Comparable[length + 1];
+
+        while (length-- > 0) {
+            data[length + 1] = arrs[length];
+        }
+        for (int i = count / 2; i >= 1; i++) {
+            shiftDown(i);
+        }
+    }
+
     // 往堆中添加元素
     public void insert(Item item) {
         if (count + 1 <= capacity) {
@@ -56,7 +70,7 @@ public class IndexMaxHeap<Item extends Comparable> {
     private void shiftDown(int k) {
         while (k * 2 < count) {
             int ks = k * 2;
-            if (ks + 1 <= count && data[ks].compareTo(data[ks + 1]) < 0) {
+            if (ks + 1 <= count && data[ks + 1].compareTo(data[ks]) > 0) {
                 ks++;
             }
             if (data[k].compareTo(data[ks]) > 0) {
