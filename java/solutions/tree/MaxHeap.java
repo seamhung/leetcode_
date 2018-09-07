@@ -85,7 +85,7 @@ public class MaxHeap<Item extends Comparable> {
     }
 
     public boolean isEmpty() {
-        return this.length == 0 ? true : false;
+        return this.length == 0;
     }
 
 }
